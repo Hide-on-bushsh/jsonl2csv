@@ -1,0 +1,15 @@
+import pandas as pd
+import jsonlines
+
+# 1. 读取 gsm8k 的 JSONL 文件（替换为你的文件路径）
+data = []
+with jsonlines.open("gsm8k_train.jsonl", "r") as f:
+    for line in f:
+        data.append({
+            "question": line["question"],
+            "answer": line["answer"]  # 可按需提取答案中的“最终结果”，如 line["answer"].split("Answer:")[-1]
+        })
+
+# 2. 转为 DataFrame 并保存为 CSV
+df = pd.DataFrame(data)
+df.to_csv("gsm8k_train.csv", index=False, encoding="utf-8")  # index=False 不保留行号
